@@ -1,0 +1,15 @@
+﻿@page
+@model FlashMedia.Pages.Photos.CarCategoryModel
+@{
+}
+
+<h2>What's your dream car?</h2>
+
+<div class="photo-grid">
+    @foreach (var photo in Model.CarPhotos)
+    {
+        <a asp-page="/Photos/PhotoDetails" asp-route-id="@photo.Id">
+            <img src="@photo.FilePath" alt="@photo.Name" class="grid-img" style="height: 270px;" />
+        </a>
+    }
+</div>

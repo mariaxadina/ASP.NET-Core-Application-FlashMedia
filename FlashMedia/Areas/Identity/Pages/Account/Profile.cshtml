@@ -1,0 +1,28 @@
+﻿@page
+@model ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h2 class="mb-4">Your Albums</h2>
+
+<div class="mb-4">
+    <ul class="list-group">
+        @foreach (var album in Model.UserAlbums)
+        {
+            <li class="list-group-item">
+                <a asp-page="/Albums/AlbumDetails" asp-route-id="@album.Id" class="text-decoration-none text-dark">
+                    @album.Title
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+<form method="post" asp-page-handler="AddAlbum" class="w-100 w-md-50">
+    <div class="mb-2">
+        <input asp-for="NewAlbumName" placeholder="Album name" class="form-control" />
+        <span asp-validation-for="NewAlbumName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Add Album</button>
+</form>

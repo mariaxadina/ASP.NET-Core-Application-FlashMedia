@@ -1,0 +1,107 @@
+﻿@page
+@model FlashMedia.Pages.Photos.PhotoDetailsModel
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Photo Details";
+}
+
+<h2>@Model.Photo.Name</h2>
+
+<div class="row">
+    <div class="col-md-7">
+        <img src="@Model.Photo.FilePath" alt="@Model.Photo.Name" class="img-fluid rounded shadow-sm" />
+        <p><strong>Description:</strong> @Model.Photo.Description</p>
+
+        @* Only show the delete button if the user is the owner or an admin *@
+        @if (User.Identity.IsAuthenticated && (Model.Photo.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Administrator")))
+        {
+            <form method="post" asp-page-handler="Delete">
+                <input type="hidden" name="id" value="@Model.Photo.Id" />
+                <button type="submit" class="btn btn-danger mt-3">Delete Photo</button>
+            </form>
+        }
+
+        <h4>Comments</h4>
+        @if (Model.Comment != null && Model.Comment?.Any() == true)
+        {
+            <ul class="list-group">
+                @foreach (var comment in Model.Comment.Where(c => c.State == true))  @* Only display confirmed comments *@
+                {
+                    <li class="list-group-item">
+                        <strong>@comment.User?.UserName:</strong> @comment.Text
+                        <br /><small class="text-muted">@comment.DateCreated.ToString("g")</small>
+
+                        @* Only show the delete button for the comment if the user is the owner or an admin *@
+                        @if (User.Identity.IsAuthenticated && (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Administrator") || Model.Photo.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                        {
+                            <form method="post" asp-page-handler="DeleteComment">
+                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm mt-2">Delete Comment</button>
+                            </form>
+                        }
+
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No comments yet.</p>
+        }
+
+        @* Display Unconfirmed Comments (State = false) Only for Admin and Owner *@
+        @if (User.Identity.IsAuthenticated && (Model.Photo.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Administrator")))
+        {
+            <h4>Unconfirmed Comments</h4>
+            @if (Model.Comment != null && Model.Comment?.Any() == true)
+            {
+                <ul class="list-group">
+                    @foreach (var comment in Model.Comment.Where(c => c.State == false))  @* Only display unconfirmed comments *@
+                    {
+                        <li class="list-group-item">
+                            <strong>@comment.User?.UserName:</strong> @comment.Text
+                            <br /><small class="text-muted">@comment.DateCreated.ToString("g")</small>
+
+                            @* Confirmation Button for Unconfirmed Comments *@
+                            <form method="post" asp-page-handler="ConfirmComment">
+                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                <button type="submit" class="btn btn-success btn-sm mt-2">Confirm Comment</button>
+                            </form>
+
+                            @* Delete Button for Unconfirmed Comments *@
+                            <form method="post" asp-page-handler="DeleteComment">
+                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm mt-2">Delete Comment</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No unconfirmed comments.</p>
+            }
+        }
+    </div>
+
+    <div class="col-md-5">
+        <h4>Add a Comment</h4>
+
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <p>Please <a href="/Identity/Account/Login">log in</a> to post a comment.</p>
+        }
+        else
+        {
+            <form method="post">
+                <div class="form-group">
+                    <input type="hidden" asp-for="AddComment.PhotoId" />
+                    <textarea asp-for="AddComment.Text" class="form-control" rows="4" placeholder="Write your comment here..."></textarea>
+                    <span asp-validation-for="AddComment.Text" class="text-danger"></span>
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary">Post Comment</button>
+            </form>
+        }
+    </div>
+</div>

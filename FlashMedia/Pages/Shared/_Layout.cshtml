@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FlashMedia</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FlashMedia.styles.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/c2bbd65096.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center" asp-area="" asp-page="/Index">
+                        <img src="~/css/FlashMedia.png" alt="FlashMedia Logo" style="height:80px; margin-right:8px;" />
+                        <span>FlashMedia</span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+
+                            <form method="get" asp-page="/Index" style="display:flex;">
+                                <input type="text" name="SearchTerm" placeholder="Search..." style="padding: 8px 12px; border-radius: 20px; border: 1px solid #ccc; outline: none;" />
+                                <button type="submit" style="background: none; border: none; margin-left: 8px; cursor: pointer; padding: 8px;"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </form>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Map/Map"><i class="fa-solid fa-map-location-dot"></i></a>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark"
+                                   asp-area=""
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <i class="fa-solid fa-images"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-page="/Photos/CarCategory">Cars</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Photos/NatureCategory">Nature</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Photos/PortraitCategory">Portraits</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Photos/LandscapeCategory">Landscapes</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Photos/ProductCategory">Products</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Photos/FoodCategory">About Food</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main role="main">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h5>FlashMedia</h5>
+                        <ul class="footer-links">
+                            <li><a asp-area="" asp-page="/About">About Us</a></li>
+                            <li><a asp-area="" asp-page="/Blog">Blog</a></li>
+                            <li><a href="#">Community</a></li>
+                            <li><a href="#">Careers</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h5>Product</h5>
+                        <ul class="footer-links">
+                            <li><a href="#">Popular Images</a></li>
+                            <li><a href="#">Collections</a></li>
+                            <li><a href="#">Trending</a></li>
+                            <li><a href="#">Gift Cards</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h5>Legal</h5>
+                        <ul class="footer-links">
+                            <li><a asp-area="" asp-page="/Privacy">Privacy Policy</a></li>
+                            <li><a asp-area="" asp-page="/Terms">Terms of Service</a></li>
+                            <li><a asp-area="" asp-page="/Cookies">Cookie Policy</a></li>
+                            <li><a asp-area="" asp-page="/License">License</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h5>Connect</h5>
+                        <ul class="footer-links">
+                            <li><a href="#">Newsletter</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <div class="social-links">
+                                <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                                <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; @DateTime.Now.Year - FlashMedia. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

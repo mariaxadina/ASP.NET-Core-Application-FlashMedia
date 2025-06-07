@@ -1,0 +1,142 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if (!string.IsNullOrEmpty(Model.SearchTerm))
+{
+    if (Model.ResultPhotos.Any())
+    {
+        foreach (var photo in Model.ResultPhotos)
+        {
+            
+            <a asp-page="/Photos/PhotoDetails" asp-route-id="@photo.Id">
+                <img src="@photo.FilePath" alt="@photo.Name" style="width: 200px; height: 270px;" />
+            </a>
+            
+        }
+       
+    }
+    else
+    {
+        <p>No search results.</p>
+    }
+}
+
+<h2>Latest photos</h2>
+
+<div class="photo-grid">
+    @foreach (var photo in Model.LatestPhotos)
+    {
+        <a asp-page="/Photos/PhotoDetails" asp-route-id="@photo.Id">
+            <img src="@photo.FilePath" alt="@photo.Name" class="grid-img" style="height: 270px;" />
+        </a>
+    }
+</div>
+
+<div class="text-center">
+    <p>
+        Welcome to FlashMedia – your space to shine! Here, you can upload and showcase your photos from any category,
+        express your creativity, and let your talent be seen. Join our community and get inspired by others just like you!
+    </p>
+</div>
+
+@{
+    var featuredPhoto = Model.LatestPhotos.FirstOrDefault();
+    var largeBannerPhoto = Model.LatestPhotos.Skip(1).FirstOrDefault();
+}
+
+@if (featuredPhoto != null)
+{
+    <div class="featured-section">
+        <div class="featured-image">
+            <img src="@featuredPhoto.FilePath" alt="@featuredPhoto.Name" />
+        </div>
+        <div class="featured-text">
+            <p>Want to show off your photos?<br />Use <span class="brand">FlashMedia</span>.</p>
+        </div>
+    </div>
+}
+
+@if (largeBannerPhoto != null)
+{
+    <div class="banner-section" style="background-image: url('@largeBannerPhoto.FilePath');">
+        <div class="banner-text">
+            <h2>The site that won’t let you down.</h2>
+        </div>
+    </div>
+}
+
+<style>
+    .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .grid-img {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .grid-img:hover {
+            transform: scale(1.05);
+        }
+
+    .featured-section {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        margin: 60px 0;
+        flex-wrap: wrap;
+    }
+
+    .featured-image img {
+        width: 500px;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .featured-text {
+        flex: 1;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4;
+    }
+
+        .featured-text .brand {
+            color: #007bff;
+        }
+
+    .banner-section {
+        position: relative;
+        height: 400px;
+        background-size: cover;
+        background-position: center;
+        margin-top: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .banner-text {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px 40px;
+        border-radius: 10px;
+    }
+
+        .banner-text h2 {
+            color: white;
+            font-size: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            margin: 0;
+        }
+</style>

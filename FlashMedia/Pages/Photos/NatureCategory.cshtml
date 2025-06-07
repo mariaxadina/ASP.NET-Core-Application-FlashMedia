@@ -1,0 +1,14 @@
+﻿@page
+@model FlashMedia.Pages.Photos.NatureCategoryModel
+@{
+}
+<h2>Who doesn't like Nature?</h2>
+
+<div class="photo-grid">
+    @foreach (var photo in Model.NaturePhotos)
+    {
+        <a asp-page="/Photos/PhotoDetails" asp-route-id="@photo.Id">
+            <img src="@photo.FilePath" alt="@photo.Name" class="grid-img" style="height: 270px;" />
+        </a>
+    }
+</div>
